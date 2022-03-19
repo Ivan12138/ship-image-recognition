@@ -10,6 +10,7 @@
 import os
 import pickle
 import matplotlib.pyplot as plt
+import numpy as np
 # load数据集数据
 def loadcifar(filename):
     with open(filename, "rb") as f:
@@ -42,12 +43,27 @@ def process_cifar10(filepath):
 #
 
 
-def visualable():
-    figure = plt.figure(figsize=len())
+def visualable(img, labels, labels_names):
+    figure = plt.figure(figsize=(len(labels_names), 10))
+
+    idxs = list(range(len(img)))
+    np.random.shuffle(idxs)
+    count = [0]*len(labels_names)
+    for idx in idxs:
+        label = labels[idx]
+        # ???
+        if count[label]>=10:
+            continue
+        if sum(count)>10*len(labels_names):
+            pass
 
 
 if __name__ == '__main__':
     filepath = "./cifar-10-python/cifar-10-batches-py"
     # process_cifar10(filepath)
-    load_labelsnames(filepath)
-
+    data, labels = process_cifar10(filepath)
+    print("data", data)
+    img = data.reshape(data.shape[0], 3, 32, 32)
+    print("img:", img)
+    labels_names = load_labelsnames(filepath)
+    # visualable(img, labels, labels_names)
